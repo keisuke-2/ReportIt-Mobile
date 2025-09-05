@@ -1,0 +1,13 @@
+/* Minimal global styles for web. Safe to leave minimal for native builds. */
+:root {
+  --background: #ffffff;
+  --text: #000000;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  font-family: 'SpaceMono', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: var(--background);
+  color: var(--text);
+}
