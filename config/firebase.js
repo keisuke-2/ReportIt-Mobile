@@ -1,37 +1,13 @@
-// import { initializeApp, getApp, getApps } from 'firebase/app';
-// import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
-// import { getDatabase } from 'firebase/database';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+// Firebase temporarily disabled
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyAOz81U2qnC2MEq-P1yMbUiQW8qAPTh9OU",
-//   authDomain: "admin-76567.firebaseapp.com",
-//   projectId: "admin-76567",
-//   storageBucket: "admin-76567.appspot.com",
-//   messagingSenderId: "189749622351",
-//   appId: "1:189749622351:android:4859108affcfff96985c3a",
-//   databaseURL: "https://admin-76567-default-rtdb.firebaseio.com/"
-// };
+// Minimal exports to prevent import errors
+export const auth = null;
+export const realtimeDb = null;
+export const onAuthStateChanged = () => () => {};
+export const signInWithEmailAndPassword = () => Promise.resolve(null);
+export const createUserWithEmailAndPassword = () => Promise.resolve(null);
+export const signOut = () => Promise.resolve(null);
+export const getCurrentUser = () => null;
+export const authService = null;
 
-// const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-
-// // Initialize Auth with proper error handling
-// let auth;
-// try {
-//   auth = initializeAuth(app, {
-//     persistence: getReactNativePersistence(AsyncStorage)
-//   });
-// } catch (error) {
-//   // Auth already initialized, get existing instance
-//   auth = getAuth(app);
-// }
-
-// const realtimeDb = getDatabase(app);
-
-// Export mock objects to prevent import errors
-const auth = null;
-const realtimeDb = null;
-const app = null;
-
-export { auth, realtimeDb };
-export default app;
+export default null;

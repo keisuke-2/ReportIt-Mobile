@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
-import { ArrowLeftIcon } from 'react-native-heroicons/outline';
-import { loginUser } from '../services/authService';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { ArrowLeftIcon } from 'react-native-heroicons/solid';
 import Logo from '../components/Logo';
 
 export default function LoginScreen({ onBack, onSignup, onLogin }) {
@@ -9,35 +8,21 @@ export default function LoginScreen({ onBack, onSignup, onLogin }) {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
 
+  // Simplified login - no authentication required
   const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
-      return;
-    }
-
-    if (!email.includes('@')) {
-      Alert.alert('Error', 'Please enter a valid email address');
-      return;
-    }
-
     setLoading(true);
     
+    // Allow login with any input or even empty fields
     try {
-      const result = await loginUser(email, password);
-      
-      if (result.success) {
-        Alert.alert('Success', 'Login successful!', [
-          { text: 'OK', onPress: onLogin }
-        ]);
-      } else {
-        Alert.alert('Login Failed', result.error);
-      }
+      // Simulate successful login without Firebase
+      setTimeout(() => {
+        setLoading(false);
+        onLogin({ email: email.trim() || 'guest@example.com' });
+      }, 500); // Reduced delay for faster login
     } catch (error) {
-      Alert.alert('Error', 'An unexpected error occurred');
-    } finally {
       setLoading(false);
+      Alert.alert('Error', 'Login failed. Please try again.');
     }
   };
 
@@ -48,84 +33,66 @@ export default function LoginScreen({ onBack, onSignup, onLogin }) {
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
           <ArrowLeftIcon size={24} color="white" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Login</Text>
-        <View style={styles.placeholder} />
+        <View style={styles.headerContent}>
+          <Logo size={32} color="white" />
+          <Text style={styles.headerTitle}>Login</Text>
+        </View>
       </View>
 
-      {/* Content */}
-      <View style={styles.content}>
-        <View style={styles.formContainer}>
-          <Logo size={48} color="#EF4444" />
-        
-          <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subtitle}>Sign in to your account</Text>
+      {/* Form */}
+      <View style={styles.form}>
+        <Text style={styles.title}>Welcome Back</Text>
+        <Text style={styles.subtitle}>Sign in to your account</Text>
 
-          {/* Email Input */}
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Email</Text>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Email</Text>
+          <TextInput
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            placeholder="Enter your email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Password</Text>
+          <View style={styles.passwordContainer}>
             <TextInput
-              style={styles.input}
-              placeholder="Enter your email"
-              placeholderTextColor="#9CA3AF"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
+              style={styles.passwordInput}
+              value={password}
+              onChangeText={setPassword}
+              placeholder="Enter your password"
+              secureTextEntry={!showPassword}
               autoCapitalize="none"
               autoCorrect={false}
             />
-          </View>
-
-          {/* Password Input */}
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Password</Text>
-            <View style={styles.passwordContainer}>
-              <TextInput
-                style={styles.passwordInput}
-                secureTextEntry={!showPassword}
-                placeholder="Enter your password"
-                placeholderTextColor="#9CA3AF"
-                value={password}
-                onChangeText={setPassword}
-                autoCapitalize="none"
-              />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                {showPassword ? (
-                  <EyeSlashIcon size={20} color="#9CA3AF" />
-                ) : (
-                  <EyeIcon size={20} color="#9CA3AF" />
-                )}
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {/* Remember Me */}
-          <TouchableOpacity style={styles.checkboxContainer} onPress={() => setRememberMe(!rememberMe)}>
-            <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
-              {rememberMe && <Text style={styles.checkmark}>✓</Text>}
-            </View>
-            <Text style={styles.rememberText}>Remember me</Text>
-          </TouchableOpacity>
-
-          {/* Login Button */}
-          <TouchableOpacity 
-            style={[styles.button, loading && styles.buttonDisabled]} 
-            onPress={handleLogin}
-            disabled={loading}
-          >
-            {loading ? (
-              <ActivityIndicator color="white" />
-            ) : (
-              <Text style={styles.buttonText}>Login</Text>
-            )}
-          </TouchableOpacity>
-
-          {/* Signup Link */}
-          <View style={styles.linkContainer}>
-            <Text style={styles.linkText}>Don't have an account? </Text>
-            <TouchableOpacity onPress={onSignup}>
-              <Text style={styles.link}>Sign up</Text>
+            <TouchableOpacity
+              onPress={() => setShowPassword(!showPassword)}
+              style={styles.eyeButton}
+            >
+              <Text style={styles.eyeText}>{showPassword ? 'Hide' : 'Show'}</Text>
             </TouchableOpacity>
           </View>
+        </View>
+
+        <TouchableOpacity
+          style={[styles.loginButton, loading && styles.disabledButton]}
+          onPress={handleLogin}
+          disabled={loading}
+        >
+          <Text style={styles.loginButtonText}>
+            {loading ? 'Signing In...' : 'Sign In'}
+          </Text>
+        </TouchableOpacity>
+
+        <View style={styles.signupContainer}>
+          <Text style={styles.signupText}>Don't have an account? </Text>
+          <TouchableOpacity onPress={onSignup}>
+            <Text style={styles.linkText}>Sign Up</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -140,21 +107,26 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#EF4444',
     paddingTop: 48,
-    paddingBottom: 16,
+    paddingBottom: 32,
     paddingHorizontal: 24,
-  },
-  backButton: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  backText: {
-    color: 'white',
-    fontSize: 16,
-    marginLeft: 8,
+  backButton: {
+    marginRight: 16,
   },
-  content: {
-    flex: 1,
+  headerContent: {
+    flexDirection: 'row',
     alignItems: 'center',
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginLeft: 12,
+  },
+  form: {
+    flex: 1,
     paddingHorizontal: 24,
     paddingTop: 32,
   },
@@ -162,7 +134,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#111827',
-    marginTop: 16,
+    textAlign: 'center',
     marginBottom: 8,
   },
   subtitle: {
@@ -170,82 +142,70 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 32,
   },
-  formContainer: {
-    width: '100%',
-  },
   inputContainer: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   label: {
     fontSize: 16,
+    fontWeight: '600',
     color: '#111827',
     marginBottom: 8,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 16,
   },
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#E5E7EB',
+    borderColor: '#D1D5DB',
     borderRadius: 8,
-    paddingHorizontal: 16,
-    backgroundColor: '#F9FAFB',
   },
   passwordInput: {
     flex: 1,
+    paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 16,
   },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 24,
+  eyeButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderWidth: 2,
-    borderColor: '#E5E7EB',
-    borderRadius: 4,
-    marginRight: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
+  eyeText: {
+    color: '#6B7280',
+    fontSize: 14,
   },
-  checkboxChecked: {
-    backgroundColor: '#EF4444',
-    borderColor: '#EF4444',
-  },
-  checkmark: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  rememberText: {
-    color: '#111827',
-  },
-  button: {
+  loginButton: {
     backgroundColor: '#EF4444',
     borderRadius: 8,
     paddingVertical: 16,
     alignItems: 'center',
-    marginBottom: 24,
+    marginTop: 8,
   },
-  buttonDisabled: {
-    opacity: 0.6,
+  disabledButton: {
+    opacity: 0.7,
   },
-  buttonText: {
+  loginButtonText: {
     color: 'white',
     fontSize: 18,
     fontWeight: '600',
   },
-  linkContainer: {
+  signupContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 24,
   },
-  linkText: {
+  signupText: {
     color: '#6B7280',
   },
-  link: {
+  linkText: {
     color: '#EF4444',
+    fontWeight: '600',
   },
 });
