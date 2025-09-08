@@ -8,7 +8,6 @@ import SignupScreen from './screens/SignupScreen';
 import MapScreen from './screens/MapScreen';
 import IncidentAnalysisScreen from './screens/IncidentAnalysisScreen';
 import { onAuthStateChanged, logoutUser } from './services/authService';
-import { auth } from './config/firebase'; // Import auth directly
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('loading'); // Start with a loading screen
@@ -107,21 +106,20 @@ export default function App() {
 
   // Listen for authentication state changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (authenticatedUser) => {
+    // Use the onAuthStateChanged function from authService directly
+    const unsubscribe = onAuthStateChanged((authenticatedUser) => {
       setUser(authenticatedUser);
       if (authenticatedUser) {
         setCurrentScreen('map');
       } else {
-        // If user is not logged in, show welcome screen after initial check
         if (currentScreen === 'loading') {
-            setCurrentScreen('welcome');
+          setCurrentScreen('welcome');
         }
       }
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
-  }, []);
+  }, [currentScreen]);
 
 
   // Handle logout

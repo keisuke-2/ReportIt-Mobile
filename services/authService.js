@@ -3,10 +3,24 @@ import {
   signInWithEmailAndPassword, 
   signOut, 
   updateProfile,
-  onAuthStateChanged
+  onAuthStateChanged as firebaseOnAuthStateChanged,
+  initializeAuth,
+  getReactNativePersistence
 } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ref, set, get, child } from 'firebase/database';
-import { auth, realtimeDb } from '../config/firebase';
+import { app, realtimeDb } from '../config/firebase';
+
+// Initialize auth with AsyncStorage persistence
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage)
+});
+
+// Export the auth instance and onAuthStateChanged function
+export { auth };
+export const onAuthStateChanged = (callback) => {
+  return firebaseOnAuthStateChanged(auth, callback);
+};
 
 // Check if username is available
 export const checkUsernameAvailability = async (username) => {
@@ -180,9 +194,4 @@ export const getUserByUsername = async (username) => {
   } catch (error) {
     return { success: false, error: error.message };
   }
-};
-
-// Listen to auth state changes
-export const onAuthStateChange = (callback) => {
-  return onAuthStateChanged(auth, callback);
 };
