@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@react-native-async-storage/async-storage": "^2.1.2",
     "@react-native-firebase/app": "^23.3.0",
     "@react-native-firebase/auth": "^23.3.0",
@@ -16,13 +17,24 @@
     "expo": "~53.0.22",
     "expo-location": "~18.1.6",
     "expo-status-bar": "~2.2.3",
+=======
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "@react-navigation/native": "^6.1.7",
+    "@react-navigation/stack": "^6.3.17",
+    "expo": "^54.0.6",
+    "expo-location": "~19.0.7",
+    "expo-status-bar": "~3.0.8",
+>>>>>>> ec3f7b7ea4a2aa741c7e5ce6e89bc72544de3605
     "firebase": "^12.2.1",
     "nativewind": "^4.1.23",
-    "react": "19.0.0",
-    "react-native": "0.79.5",
+    "react": "19.1.0",
+    "react-native": "0.81.4",
+    "react-native-gesture-handler": "~2.28.0",
     "react-native-heroicons": "^4.0.0",
-    "react-native-svg": "15.11.2",
-    "react-native-webview": "13.13.5"
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-screens": "~4.16.0",
+    "react-native-svg": "15.12.1",
+    "react-native-webview": "13.15.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
