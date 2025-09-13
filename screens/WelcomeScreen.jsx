@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { MapPinIcon, ShieldCheckIcon } from 'react-native-heroicons/outline';
 
 export default function WelcomeScreen({ navigation }) {
@@ -8,55 +8,55 @@ export default function WelcomeScreen({ navigation }) {
   };
 
   return (
-    <View className="flex-1 bg-white">
-      <View className="bg-red-400 pt-16 pb-8 px-6">
-        <View className="flex-row items-center justify-center">
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.headerContent}>
           <ShieldCheckIcon size={32} color="white" />
-          <Text className="text-white text-2xl font-bold ml-3">ReportIt</Text>
+          <Text style={styles.headerTitle}>ReportIt</Text>
         </View>
       </View>
 
-      <ScrollView className="flex-1 px-6 pt-8">
-        <Text className="text-2xl font-bold text-gray-900 text-center mb-4">
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+        <Text style={styles.welcomeTitle}>
           Welcome to ReportIt
         </Text>
 
-        <Text className="text-gray-600 text-center mb-12 leading-6">
+        <Text style={styles.welcomeSubtitle}>
           A Machine Learning-Driven Mobile Application for Dynamic{'\n'}
           Theft Risk Assessment Using Crowd-Sourced Reports
         </Text>
 
-        <View className="space-y-6">
-          <View className="bg-gray-100 rounded-2xl p-6">
-            <View className="items-center mb-4">
-              <View className="bg-red-100 p-4 rounded-full">
+        <View style={styles.cardsContainer}>
+          <View style={styles.card}>
+            <View style={styles.cardIconContainer}>
+              <View style={styles.iconBackground}>
                 <MapPinIcon size={32} color="#EF4444" />
               </View>
             </View>
             
-            <Text className="text-xl font-bold text-gray-900 text-center mb-3">
+            <Text style={styles.cardTitle}>
               Real-time Risk Assessment
             </Text>
             
-            <Text className="text-gray-600 text-center leading-6">
+            <Text style={styles.cardDescription}>
               View dynamic theft risk maps based on{'\n'}
               crowd-sourced reports and machine{'\n'}
               learning analysis.
             </Text>
           </View>
 
-          <View className="bg-gray-100 rounded-2xl p-6">
-            <View className="items-center mb-4">
-              <View className="bg-red-100 p-4 rounded-full">
+          <View style={styles.card}>
+            <View style={styles.cardIconContainer}>
+              <View style={styles.iconBackground}>
                 <ShieldCheckIcon size={32} color="#EF4444" />
               </View>
             </View>
             
-            <Text className="text-xl font-bold text-gray-900 text-center mb-3">
+            <Text style={styles.cardTitle}>
               Community Protection
             </Text>
             
-            <Text className="text-gray-600 text-center leading-6">
+            <Text style={styles.cardDescription}>
               Contribute to community safety by{'\n'}
               reporting incidents and helping others{'\n'}
               stay informed.
@@ -65,12 +65,12 @@ export default function WelcomeScreen({ navigation }) {
         </View>
       </ScrollView>
 
-      <View className="px-6 pb-8">
+      <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={handleGetStarted}
-          className="bg-red-400 rounded-2xl py-4"
+          style={styles.getStartedButton}
         >
-          <Text className="text-white text-center text-lg font-semibold">
+          <Text style={styles.buttonText}>
             Get Started
           </Text>
         </TouchableOpacity>
@@ -78,3 +78,92 @@ export default function WelcomeScreen({ navigation }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  header: {
+    backgroundColor: '#EF4444',
+    paddingTop: 64,
+    paddingBottom: 32,
+    paddingHorizontal: 24,
+  },
+  headerContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginLeft: 12,
+  },
+  scrollView: {
+    flex: 1,
+    paddingHorizontal: 24,
+  },
+  scrollContent: {
+    paddingTop: 32,
+  },
+  welcomeTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#111827',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  welcomeSubtitle: {
+    color: '#6B7280',
+    textAlign: 'center',
+    lineHeight: 24,
+    marginBottom: 48,
+  },
+  cardsContainer: {
+    marginBottom: 24,
+  },
+  card: {
+    backgroundColor: '#F3F4F6',
+    borderRadius: 16,
+    padding: 24,
+    marginBottom: 24,
+  },
+  cardIconContainer: {
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  iconBackground: {
+    backgroundColor: '#FEE2E2',
+    padding: 16,
+    borderRadius: 50,
+  },
+  cardTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#111827',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  cardDescription: {
+    color: '#6B7280',
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+  buttonContainer: {
+    paddingHorizontal: 24,
+    paddingBottom: 32,
+  },
+  getStartedButton: {
+    backgroundColor: '#EF4444',
+    borderRadius: 16,
+    paddingVertical: 16,
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+});
