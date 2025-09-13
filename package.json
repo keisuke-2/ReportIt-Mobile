@@ -9,35 +9,27 @@
     "web": "expo start --web"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@react-native-async-storage/async-storage": "^2.1.2",
-    "@react-native-firebase/app": "^23.3.0",
-    "@react-native-firebase/auth": "^23.3.0",
-    "@react-native-firebase/database": "^23.3.0",
-    "expo": "~53.0.22",
-    "expo-location": "~18.1.6",
-    "expo-status-bar": "~2.2.3",
-=======
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/stack": "^6.3.17",
     "expo": "^54.0.6",
     "expo-location": "~19.0.7",
     "expo-status-bar": "~3.0.8",
->>>>>>> ec3f7b7ea4a2aa741c7e5ce6e89bc72544de3605
     "firebase": "^12.2.1",
     "nativewind": "^4.1.23",
-    "react": "19.1.0",
-    "react-native": "0.81.4",
-    "react-native-gesture-handler": "~2.28.0",
+    "react": "18.2.0",
+    "react-native": "0.74.5",
+    "react-native-gesture-handler": "~2.14.0",
     "react-native-heroicons": "^4.0.0",
-    "react-native-safe-area-context": "~5.6.0",
-    "react-native-screens": "~4.16.0",
+    "react-native-reanimated": "~3.10.0",
+    "react-native-safe-area-context": "4.10.5",
+    "react-native-screens": "~3.31.1",
     "react-native-svg": "15.12.1",
     "react-native-webview": "13.15.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
+    "@babel/core": "^7.26.0",
+    "babel-preset-expo": "^11.0.0",
     "tailwindcss": "^3.4.17"
   },
   "private": true
