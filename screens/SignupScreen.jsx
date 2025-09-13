@@ -11,6 +11,7 @@ export default function SignupScreen({ onBack, onLogin, onSignup }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [barangay, setBarangay] = useState('');
   const [loading, setLoading] = useState(false);
   const [usernameChecking, setUsernameChecking] = useState(false);
   const [passwordValidation, setPasswordValidation] = useState({ isValid: false, errors: [] });
@@ -38,7 +39,7 @@ export default function SignupScreen({ onBack, onLogin, onSignup }) {
   };
 
   const handleSignup = async () => {
-    if (!firstName || !lastName || !username || !email || !password || !confirmPassword) {
+    if (!firstName || !lastName || !username || !email || !password || !confirmPassword || !barangay) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
@@ -68,7 +69,7 @@ export default function SignupScreen({ onBack, onLogin, onSignup }) {
     setLoading(true);
     
     try {
-      const result = await registerUser(email, password, firstName, lastName, username);
+      const result = await registerUser(email, password, firstName, lastName, username, "User", barangay);
       
       if (result.success) {
         Alert.alert('Success', 'Account created successfully!', [
@@ -223,6 +224,19 @@ export default function SignupScreen({ onBack, onLogin, onSignup }) {
                 )}
               </TouchableOpacity>
             </View>
+          </View>
+
+          {/* Barangay Input */}
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Barangay</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your barangay"
+              placeholderTextColor="#9CA3AF"
+              value={barangay}
+              onChangeText={setBarangay}
+              autoCapitalize="words"
+            />
           </View>
 
           {/* Terms Agreement */}
