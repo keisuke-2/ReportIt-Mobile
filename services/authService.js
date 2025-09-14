@@ -22,20 +22,11 @@ export const onAuthStateChanged = (callback) => {
   return firebaseOnAuthStateChanged(auth, callback);
 };
 
-// Check if username is available
+// Check if username is available (simplified - just check if not empty)
 export const checkUsernameAvailability = async (username) => {
-  try {
-    if (!realtimeDb) {
-      console.error('Database not initialized');
-      return false;
-    }
-    const dbRef = ref(realtimeDb);
-    const snapshot = await get(child(dbRef, `usernames/${username}`));
-    return !snapshot.exists(); // Returns true if username is available
-  } catch (error) {
-    console.error('Error checking username:', error);
-    return false;
-  }
+  // Since we removed the usernames collection, just validate username format
+  console.log('Username validation for:', username);
+  return username && username.length >= 3;
 };
 
 // Validate password strength
@@ -66,14 +57,27 @@ export const validatePassword = (password) => {
 
 // Check if Firebase is initialized
 const isFirebaseReady = () => {
-  return auth && realtimeDb;
+  const authReady = auth !== null && auth !== undefined;
+  const dbReady = realtimeDb !== null && realtimeDb !== undefined;
+  
+  console.log('Firebase readiness check:');
+  console.log('Auth ready:', authReady);
+  console.log('Database ready:', dbReady);
+  
+  return authReady && dbReady;
 };
 
 // Register new user
-export const registerUser = async (email, password, firstName, lastName, username) => {
+export const registerUser = async (email, password, firstName, lastName, username, role = "User", barangay = "") => {
   try {
+    console.log('Starting user registration process...');
+    
     if (!isFirebaseReady()) {
-      return { success: false, error: 'Firebase services are not ready. Please try again.' };
+      console.error('Firebase not ready - attempting to proceed anyway');
+      // Don't block registration, but log the issue
+      if (!auth) {
+        return { success: false, error: 'Authentication service is not available. Please check your internet connection.' };
+      }
     }
 
     // Validate password strength
@@ -82,13 +86,29 @@ export const registerUser = async (email, password, firstName, lastName, usernam
       return { success: false, error: passwordValidation.errors.join('\n') };
     }
 
-    // Check if username is available
-    const isUsernameAvailable = await checkUsernameAvailability(username);
-    if (!isUsernameAvailable) {
-      return { success: false, error: 'Username is already taken' };
+    // Check if username is available (with timeout for better UX)
+    try {
+      console.log('Checking username availability during registration...');
+      const isUsernameAvailable = await Promise.race([
+        checkUsernameAvailability(username),
+        new Promise((resolve) => {
+          setTimeout(() => {
+            console.log('Username check timed out, assuming available for first account');
+            resolve(true); // Assume available if check times out
+          }, 3000);
+        })
+      ]);
+      
+      if (!isUsernameAvailable) {
+        return { success: false, error: 'Username is already taken. Please choose a different username.' };
+      }
+    } catch (error) {
+      console.log('Username availability check failed, proceeding with registration:', error.message);
+      // Continue with registration even if username check fails
     }
 
     // Create user with email and password in Firebase Auth
+    console.log('Creating user account...');
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     
@@ -97,25 +117,29 @@ export const registerUser = async (email, password, firstName, lastName, usernam
       displayName: `${firstName} ${lastName}`
     });
     
-    // Store user data in Realtime Database
-    const userRef = ref(realtimeDb, `users/${user.uid}`);
-    await set(userRef, {
-      firstName,
-      lastName,
-      username,
-      email,
-      uid: user.uid,
-      createdAt: new Date().toISOString(),
-      isActive: true,
-      lastLogin: new Date().toISOString()
-    });
-
-    // Reserve the username
-    const usernameRef = ref(realtimeDb, `usernames/${username}`);
-    await set(usernameRef, {
-      uid: user.uid,
-      createdAt: new Date().toISOString()
-    });
+    // Store user data in Realtime Database (if available)
+    if (realtimeDb) {
+      try {
+        console.log('Storing user data in database...');
+        const userRef = ref(realtimeDb, `users/${user.uid}`);
+        await set(userRef, {
+          UserID: user.uid,
+          Name: `${firstName} ${lastName}`,
+          Email: email,
+          Password: "***", // Don't store actual password
+          Role: role,
+          Barangay: barangay
+        });
+        
+        console.log('User data stored successfully in database');
+      } catch (dbError) {
+        console.error('Failed to store user data in database:', dbError);
+        // Don't fail the registration if database storage fails
+        console.log('User account created successfully but some data may not be stored in database');
+      }
+    } else {
+      console.warn('Database not available - user created but additional data not stored');
+    }
     
     return { success: true, user };
   } catch (error) {

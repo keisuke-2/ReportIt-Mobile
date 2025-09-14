@@ -7,14 +7,12 @@ import LoginScreen from './screens/LoginScreen';
 import SignupScreen from './screens/SignupScreen';
 import MapScreen from './screens/MapScreen';
 import IncidentAnalysisScreen from './screens/IncidentAnalysisScreen';
-import { onAuthStateChanged, logoutUser } from './services/authService';
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState('loading'); // Start with a loading screen
+  const [currentScreen, setCurrentScreen] = useState('welcome'); // Start with welcome screen
   const [userLocation, setUserLocation] = useState(null);
   const [locationPermission, setLocationPermission] = useState(false);
   const [locationSubscription, setLocationSubscription] = useState(null);
-  const [user, setUser] = useState(null);
 
   // Request location permission and start watching
   const requestLocationPermission = async () => {
@@ -104,31 +102,11 @@ export default function App() {
     requestLocationPermission();
   }, []);
 
-  // Listen for authentication state changes
-  useEffect(() => {
-    // Use the onAuthStateChanged function from authService directly
-    const unsubscribe = onAuthStateChanged((authenticatedUser) => {
-      setUser(authenticatedUser);
-      if (authenticatedUser) {
-        setCurrentScreen('map');
-      } else {
-        if (currentScreen === 'loading') {
-          setCurrentScreen('welcome');
-        }
-      }
-    });
-
-    return () => unsubscribe();
-  }, [currentScreen]);
-
-
-  // Handle logout
+  // Handle logout - simplified without Firebase
   const handleLogout = async () => {
     try {
-      await logoutUser();
       stopLocationTracking();
-      setUser(null); // This will trigger the onAuthStateChanged listener
-      setCurrentScreen('welcome'); // Explicitly navigate to welcome
+      setCurrentScreen('welcome');
     } catch (error) {
       console.error('Logout error:', error);
     }
@@ -148,15 +126,6 @@ export default function App() {
     }
   };
 
-  // Render loading screen while checking auth state
-  if (currentScreen === 'loading') {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-  
   if (currentScreen === 'analysis') {
     return (
       <IncidentAnalysisScreen 
@@ -171,7 +140,7 @@ export default function App() {
         onLogout={handleLogout}
         navigation={navigation}
         userLocation={userLocation}
-        user={user}
+        user={null}
       />
     );
   }
@@ -182,7 +151,7 @@ export default function App() {
         onBack={() => setCurrentScreen('welcome')}
         onSignup={() => setCurrentScreen('signup')}
         onLogin={(userData) => {
-          // The onAuthStateChanged listener will handle navigation
+          setCurrentScreen('map');
         }}
       />
     );
@@ -194,7 +163,7 @@ export default function App() {
         onBack={() => setCurrentScreen('welcome')}
         onLogin={() => setCurrentScreen('login')}
         onSignup={(userData) => {
-          // The onAuthStateChanged listener will handle navigation
+          setCurrentScreen('map');
         }}
       />
     );
