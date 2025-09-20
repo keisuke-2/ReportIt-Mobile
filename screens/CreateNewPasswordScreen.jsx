@@ -30,11 +30,8 @@ export default function CreateNewPasswordScreen({ navigation, route }) {
 
   return (
     <View className="flex-1 bg-white">
-      <View className="bg-red-400 pt-12 pb-6 px-4">
-        <TouchableOpacity 
-          onPress={() => navigation.goBack()}
-          className="flex-row items-center"
-        >
+      <View className="bg-red-500 pt-12 pb-6 px-4">
+        <TouchableOpacity className="flex-row items-center" onPress={() => navigation.goBack()}>
           <ArrowLeftIcon size={24} color="white" />
           <Text className="text-white text-lg ml-2 font-medium">Back</Text>
         </TouchableOpacity>
@@ -47,30 +44,20 @@ export default function CreateNewPasswordScreen({ navigation, route }) {
           </View>
         </View>
 
-        <Text className="text-2xl font-bold text-gray-900 text-center mb-3">
-          Create New Password
-        </Text>
+        <Text className="text-2xl font-bold text-gray-900 text-center mb-3">Create New Password</Text>
+        <Text className="text-gray-500 text-center mb-8">Create a new secure password for your account</Text>
 
-        <Text className="text-gray-600 text-center mb-8">
-          Create a new secure password for your account
-        </Text>
-
-        <View className="mb-6">
-          <Text className="text-gray-700 text-base font-medium mb-2">
-            New Password
-          </Text>
+        <View className="mb-5">
+          <Text className="text-gray-700 text-base font-medium mb-2">New Password</Text>
           <View className="relative">
             <TextInput
-              className="border border-gray-300 rounded-lg px-4 py-3 text-base pr-12"
+              className="border border-gray-300 rounded-xl px-4 py-3.5 pr-12 text-base bg-gray-50 text-gray-700"
               placeholder="Enter new password"
               value={newPassword}
               onChangeText={setNewPassword}
               secureTextEntry={!showNewPassword}
             />
-            <TouchableOpacity
-              onPress={() => setShowNewPassword(!showNewPassword)}
-              className="absolute right-3 top-3"
-            >
+            <TouchableOpacity className="absolute right-3 top-3.5" onPress={() => setShowNewPassword(!showNewPassword)}>
               {showNewPassword ? (
                 <EyeSlashIcon size={24} color="#6B7280" />
               ) : (
@@ -80,22 +67,17 @@ export default function CreateNewPasswordScreen({ navigation, route }) {
           </View>
         </View>
 
-        <View className="mb-6">
-          <Text className="text-gray-700 text-base font-medium mb-2">
-            Confirm New Password
-          </Text>
+        <View className="mb-5">
+          <Text className="text-gray-700 text-base font-medium mb-2">Confirm New Password</Text>
           <View className="relative">
             <TextInput
-              className="border border-gray-300 rounded-lg px-4 py-3 text-base pr-12"
+              className="border border-gray-300 rounded-xl px-4 py-3.5 pr-12 text-base bg-gray-50 text-gray-700"
               placeholder="Confirm new password"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               secureTextEntry={!showConfirmPassword}
             />
-            <TouchableOpacity
-              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-3"
-            >
+            <TouchableOpacity className="absolute right-3 top-3.5" onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
               {showConfirmPassword ? (
                 <EyeSlashIcon size={24} color="#6B7280" />
               ) : (
@@ -105,22 +87,18 @@ export default function CreateNewPasswordScreen({ navigation, route }) {
           </View>
         </View>
 
-        <TouchableOpacity
-          onPress={handleResetPassword}
-          className="bg-red-400 rounded-lg py-4 mb-6"
-        >
-          <Text className="text-white text-center text-lg font-semibold">
-            Reset Password
-          </Text>
+        <TouchableOpacity className="bg-red-500 rounded-xl py-4 mb-6 shadow-md" onPress={handleResetPassword}>
+          <Text className="text-white text-center text-lg font-semibold">Reset Password</Text>
         </TouchableOpacity>
 
         <View className="flex-row justify-center">
-          <Text className="text-gray-600">Remember your password? </Text>
+          <Text className="text-gray-500">Remember your password? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text className="text-red-400 font-medium">Back to Login</Text>
+            <Text className="text-red-500 font-medium">Back to Login</Text>
           </TouchableOpacity>
         </View>
       </View>
     </View>
   );
 }
+

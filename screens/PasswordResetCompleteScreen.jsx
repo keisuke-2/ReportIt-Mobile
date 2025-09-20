@@ -12,11 +12,8 @@ export default function PasswordResetCompleteScreen({ navigation }) {
 
   return (
     <View className="flex-1 bg-white">
-      <View className="bg-red-400 pt-12 pb-6 px-4">
-        <TouchableOpacity 
-          onPress={() => navigation.goBack()}
-          className="flex-row items-center"
-        >
+      <View className="bg-red-500 pt-12 pb-6 px-4">
+        <TouchableOpacity className="flex-row items-center" onPress={() => navigation.goBack()}>
           <ArrowLeftIcon size={24} color="white" />
           <Text className="text-white text-lg ml-2 font-medium">Back</Text>
         </TouchableOpacity>
@@ -33,35 +30,25 @@ export default function PasswordResetCompleteScreen({ navigation }) {
           </View>
         </View>
 
-        <Text className="text-2xl font-bold text-gray-900 text-center mb-6">
-          Password Reset Complete
-        </Text>
+        <Text className="text-2xl font-bold text-gray-900 text-center mb-6">Password Reset Complete</Text>
 
-        <Text className="text-gray-600 text-center mb-4">
-          Your password has been successfully reset
-        </Text>
+        <Text className="text-gray-500 text-center mb-4">Your password has been successfully reset</Text>
 
-        <Text className="text-gray-600 text-center mb-12">
-          You can now login with your new password
-        </Text>
+        <Text className="text-gray-500 text-center mb-12">You can now login with your new password</Text>
 
-        <TouchableOpacity
-          onPress={handleReturnToLogin}
-          className="bg-red-400 rounded-lg py-4 mb-6 flex-row items-center justify-center"
-        >
-          <Text className="text-white text-center text-lg font-semibold mr-2">
-            Return to Login
-          </Text>
+        <TouchableOpacity className="bg-red-500 rounded-xl py-4 mb-6 flex-row items-center justify-center shadow-md" onPress={handleReturnToLogin}>
+          <Text className="text-white text-center text-lg font-semibold mr-2">Return to Login</Text>
           <ArrowRightIcon size={20} color="white" />
         </TouchableOpacity>
 
         <View className="flex-row justify-center">
-          <Text className="text-gray-600">Remember your password? </Text>
+          <Text className="text-gray-500">Remember your password? </Text>
           <TouchableOpacity onPress={handleReturnToLogin}>
-            <Text className="text-red-400 font-medium">Back to Login</Text>
+            <Text className="text-red-500 font-medium">Back to Login</Text>
           </TouchableOpacity>
         </View>
       </View>
     </View>
   );
 }
+
